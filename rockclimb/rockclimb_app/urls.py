@@ -19,7 +19,7 @@ path('active-rockVideos/', active_rockvideos, name='active_rockvideos'),
 path('rockVideo/<int:pk>/', views.rockVideo_detail, name='rockVideo-detail'), 
 path('rockVideo/update/<int:pk>/', update_rockVideo, name='rockVideo-update'),   
 path('rockVideo/delete/<int:pk>/', delete_rockVideo_confirm, name='rockVideo-delete-confirm'),
-
+path('rockVideo/add/', views.add_rockVideo, name='rockVideo-add'),
 ]
 
 if settings.DEBUG:

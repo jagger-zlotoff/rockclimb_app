@@ -1,0 +1,11 @@
+{% extends "rockclimb_app/base_template.html" %}
+{% block content %}
+<div class="container">
+    <h2>Add New Route</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Add Route" class="btn btn-primary">
+    </form>
+</div>
+{% endblock %}

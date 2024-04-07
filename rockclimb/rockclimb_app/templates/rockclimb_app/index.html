@@ -19,6 +19,10 @@
       color: white;
     }
     
+    .header, .add-button{
+      background-color: #2072d6;
+      color: white;
+    }
     .container {
       width: 100%;
       margin-left: 0;
@@ -55,6 +59,17 @@
         background-color: #025fd1; /* Darker shade for hover */
     }
 
+    .add-button{
+        padding: 10px 20px;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        width: 8%; /* Full width */ 
+    }
+
+    .add-button:hover{
+        background-color: #025fd1; /* Darker shade for hover */
+    }
     
   </style>
 
@@ -75,5 +90,15 @@
     {% empty %}
       <p>No active routes found.</p>
     {% endfor %}
+
   </div>
+
+  <div>
+    <h2>Add New Route</h2>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    </form>
+    <a href="{% url 'rockVideo-add' %}" class="add-button">Add New Route</a>
+</div>
 {% endblock %}
