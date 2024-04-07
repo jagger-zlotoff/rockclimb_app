@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import rockVideo
+from .models import rockVideo, Vote
 
 class RockVideoForm(forms.ModelForm):
     class Meta:
@@ -18,3 +18,11 @@ class RockVideoForm(forms.ModelForm):
             raise ValidationError("Please upload only a video or an image, not both.")
 
         return cleaned_data
+    
+class VoteForm(forms.ModelForm):
+    GRADE_CHOICES = [(f'V{i}', f'V{i}') for i in range(1, 14)]  # Generates V1-V13 options
+    grade = forms.ChoiceField(choices=GRADE_CHOICES, required=True, label="Grade the route")
+
+    class Meta:
+        model = Vote
+        fields = ['grade']

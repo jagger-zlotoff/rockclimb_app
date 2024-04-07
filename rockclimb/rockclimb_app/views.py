@@ -1,16 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import rockVideo
-from .forms import RockVideoForm
+from .models import rockVideo, Vote
+from .forms import RockVideoForm, VoteForm
 # Create your views here.
 def index(request): 
     # Get all active rock climbing videos
     active_rockVideos = rockVideo.objects.filter(is_active=True)
     # Render index.html with the active rock climbing videos in the context
     return render(request, 'rockclimb_app/index.html', {'rockVideos': active_rockVideos})
+
 def rockVideo_detail(request, pk):
-    rockvideo = get_object_or_404(rockVideo, pk=pk)
-    return render(request, 'rockclimb_app/rockVideo_detail.html', {'rockVideo': rockvideo})
+    # Retrieve the specific rockVideo instance
+    rock_video_instance = get_object_or_404(rockVideo, pk=pk)
+
+    if request.method == 'POST':
+        form = VoteForm(request.POST)
+        if form.is_valid():
+            vote = form.save(commit=False)
+            vote.rockVideo = rock_video_instance
+            
+            vote.save()
+            # Redirect to the same page to display the updated vote count
+            return redirect('rockclimb_app/index.html', pk=pk)
+    else:
+        form = VoteForm()
+    
+    context = {
+        'rockVideo': rock_video_instance,
+        'form': form,
+    }
+    return render(request, 'rockclimb_app/rockVideo_detail.html', context)
+
+    
+
 def active_rockvideos(request):
     rockvideos = rockVideo.objects.filter(active=True)  # Get all active rock climbing videos
     return render(request, 'rockclimb_app/index.html', {'rockvideos': rockvideos})  

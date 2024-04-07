@@ -23,5 +23,5 @@ path('rockVideo/delete/<int:pk>/', delete_rockVideo_confirm, name='rockVideo-del
 path('rockVideo/add/', views.add_rockVideo, name='rockVideo-add'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

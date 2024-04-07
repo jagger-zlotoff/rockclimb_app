@@ -85,6 +85,7 @@
           <a href="{{ rockVideo.get_absolute_url }}" class="view-button">View</a>
           <a href="{% url 'rockVideo-update' rockVideo.pk %}" class="update-button">Update</a>
           <a href="{% url 'rockVideo-delete-confirm' rockVideo.pk %}" class="btn btn-danger">Delete</a>
+          <span><strong>Difficulty: {{ rockVideo.get_most_voted_difficulty_display }}</strong></span>
         </div>
       </div>
     {% empty %}
