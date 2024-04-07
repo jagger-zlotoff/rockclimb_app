@@ -13,6 +13,11 @@
       background-color: #2072d6;
       color: white;
     }
+
+    .header, .update-button {
+      background-color: #2072d6;
+      color: white;
+    }
     
     .container {
       width: 100%;
@@ -20,11 +25,8 @@
       padding: 20px;
       background-color: #fff;
     }
-    .portfolio-list {
-      display: flex; /* establishes a flex container */
-      align-items: center; /* aligns items vertically in the center */
-    }
-    .portfolio-entry {
+    
+    .rockVideo-entry {
       margin-bottom: 10px; /* Adds spacing between entries */
     }
     label {
@@ -40,6 +42,18 @@
     .view-button:hover {
       background-color: #025fd1; /* Darker shade for hover */
     }
+
+    .update-button{
+      padding: 10px 20px;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      width: 8%; /* Full width */
+    }
+
+    .update-button:hover{
+        background-color: #025fd1; /* Darker shade for hover */
+    }
   </style>
 
   <div>
@@ -52,6 +66,7 @@
         <div>
           <span><strong>Route Title: {{ rockVideo.title }}</strong></span>
           <a href="{{ rockVideo.get_absolute_url }}" class="view-button">View</a>
+          <a href="{% url 'rockVideo-update' rockVideo.pk %}" class="update-button">Update</a>
         </div>
       </div>
     {% empty %}

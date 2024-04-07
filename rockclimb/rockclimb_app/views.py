@@ -14,6 +14,19 @@ def rockVideo_detail(request, pk):
 def active_rockvideos(request):
     rockvideos = rockVideo.objects.filter(active=True)  # Get all active rock climbing videos
     return render(request, 'rockclimb_app/index.html', {'rockvideos': rockvideos})  
+
+def update_rockVideo(request, pk):
+    rockvideo = get_object_or_404(rockVideo, pk=pk)
+    if request.method == 'POST':
+        form = RockVideoForm(request.POST, request.FILES, instance=rockvideo)
+        if form.is_valid():
+            form.save()
+            return redirect('rockVideo-detail', pk=rockvideo.pk)  # Redirect to the detail view or any other view
+    else:
+        form = RockVideoForm(instance=rockvideo)
+    return render(request, 'rockclimb_app/update_rockVideo.html', {'form': form})
+
+
  
 def upload_video(request):
     if request.method == 'POST':
