@@ -1,0 +1,11 @@
+{% extends "rockclimb_app/base_template.html" %}
+{% block content %}
+<div>
+    <p><strong>Are you sure you want to delete "{{ rockVideo.title }}"?</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Confirm Delete" class="btn btn-danger">
+        <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

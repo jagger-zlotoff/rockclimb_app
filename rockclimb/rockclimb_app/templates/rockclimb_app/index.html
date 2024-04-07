@@ -54,6 +54,8 @@
     .update-button:hover{
         background-color: #025fd1; /* Darker shade for hover */
     }
+
+    
   </style>
 
   <div>
@@ -67,6 +69,7 @@
           <span><strong>Route Title: {{ rockVideo.title }}</strong></span>
           <a href="{{ rockVideo.get_absolute_url }}" class="view-button">View</a>
           <a href="{% url 'rockVideo-update' rockVideo.pk %}" class="update-button">Update</a>
+          <a href="{% url 'rockVideo-delete-confirm' rockVideo.pk %}" class="btn btn-danger">Delete</a>
         </div>
       </div>
     {% empty %}

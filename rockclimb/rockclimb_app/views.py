@@ -26,7 +26,12 @@ def update_rockVideo(request, pk):
         form = RockVideoForm(instance=rockvideo)
     return render(request, 'rockclimb_app/update_rockVideo.html', {'form': form})
 
-
+def delete_rockVideo_confirm(request, pk):
+    rockvideo = get_object_or_404(rockVideo, pk=pk)
+    if request.method == 'POST':
+        rockvideo.delete()
+        return redirect('index')  # Redirect to the list view after deletion
+    return render(request, 'rockclimb_app/delete_route_confirm.html', {'rockVideo': rockvideo})
  
 def upload_video(request):
     if request.method == 'POST':
