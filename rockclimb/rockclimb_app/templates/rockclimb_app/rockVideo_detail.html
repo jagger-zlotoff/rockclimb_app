@@ -1,0 +1,77 @@
+<!-- inherit from base.html-->
+{% extends "rockclimb_app/base_template.html" %}
+<!-- Replace block content in base_template.html -->
+{% block content %}
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5; /* This sets the background of the entire page */
+      margin: 0;
+      padding: 0;
+    }
+    .header, .view-button {
+      background-color: #2072d6; 
+      color: white;
+    }
+    
+    .container {
+      width: 100%;
+      margin-left: 0;
+      padding: 20px;
+      background-color: #fff;
+    }
+    .project-list {
+      display: flex; /* establishes a flex container */
+      align-items: center; /* aligns items vertically in the center */
+    }
+    .project-entry {
+      margin-bottom: 10px; /* Adds spacing between entries */
+    }
+    label {
+     margin-right: 10px;
+    }
+    .view-button {
+      padding: 10px 20px;
+      text-align: center;
+      margin-right: 5px;
+      border: none;
+      cursor: pointer;
+      width: 50%; /* Full width */
+      display: inline-block;
+    }
+    
+    .view-button:hover {
+      background-color: #025fd1; /* Darker shade for hover */
+    }
+    .view-button:last-child{
+        margin-right: 0;
+    }
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+  
+  </style>
+<div>
+    <h1><strong>Route Title: {{ rockVideo.title }}</strong></h1>
+    <p><strong>Route Active: </strong>{{rockVideo.is_active}}</p>
+    <p><strong>Gym Name: </strong>{{rockVideo.gym_name}}</p>
+    <p><strong>Gym Address: </strong>{{rockVideo.gym_address}}</p>
+    <p><strong>About: </strong>{{rockVideo.about}}</p>
+    <p><strong>Contact Email: </strong>{{rockVideo.contact_email}}</p>
+    {% if rockVideo.file %}
+    <video width="320" height="240" controls>
+        <source src="{{ rockVideo.file.url }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    {% elif rockVideo.image %}
+    <img src="{{ rockVideo.image.url }}" alt="{{ rockVideo.title }}" width="320" height="240">
+    {% else %}
+    <p>No media available.</p>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}

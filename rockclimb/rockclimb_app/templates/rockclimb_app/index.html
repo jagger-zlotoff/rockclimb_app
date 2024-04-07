@@ -48,7 +48,7 @@
     <div class="container">
     {% for rockVideo in rockVideos %}
     <div class="rockVideo-entry">
-        <div><span>Gym Name: {{ rockVideo.gym_address }}</span></div>
+        <div><span>Gym Name: {{ rockVideo.gym_name }}</span></div>
         <div>
           <span><strong>Route Title: {{ rockVideo.title }}</strong></span>
           <a href="{{ rockVideo.get_absolute_url }}" class="view-button">View</a>

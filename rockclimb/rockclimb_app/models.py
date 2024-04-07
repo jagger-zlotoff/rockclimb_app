@@ -6,10 +6,12 @@ from django.urls import reverse
 class rockVideo(models.Model):
     title = models.CharField(max_length=200)
     contact_email = models.EmailField(max_length=200)
+    gym_name = models.CharField(max_length=200, null=True)
     gym_address = models.CharField(max_length=200)
     is_active = models.BooleanField(default=False)
     about = models.TextField(blank=True, null=True)
-    file = models.FileField(upload_to='videos/', null=True, blank=False)
+    file = models.FileField(upload_to='videos/', null=True, blank=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
     
     def __str__(self):
         return self.title
