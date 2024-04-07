@@ -1,10 +1,21 @@
 {% extends "rockclimb_app/base_template.html" %}
 
 {% block content %}
-<div class="container">
-    <h1>Welcome to Rock Climbing Routes</h1>
-    <p>This app allows you to view, add, update, and delete rock climbing routes that you have post via video or image. </p>
-    <p>Then people of the community and experienced climbers can rate the difficulty of that route. 
-    <p>It also helps new climbers explore the best climbing routes submitted by our community in different gyms.</p>
-</div>
+<main class="container" role="main">
+    <header>
+      <h1>Welcome to Rock Climbing Routes</h1>
+    </header>
+    <section aria-labelledby="app-description">
+      <h2 id="app-description">What is Rock Climbing Routes?</h2>
+      <p>This app allows you to view, add, update, and delete rock climbing routes that you have posted via video or image.</p>
+    </section>
+    <section aria-labelledby="community-contribution">
+      <h2 id="community-contribution">Community Contribution</h2>
+      <p>Then people of the community and experienced climbers can rate the difficulty of that route.</p>
+    </section>
+    <section aria-labelledby="exploring-routes">
+      <h2 id="exploring-routes">Exploring Routes</h2>
+      <p>It also helps new climbers explore the best climbing routes submitted by our community in different gyms.</p>
+    </section>
+  </main>
 {% endblock %}
