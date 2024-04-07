@@ -1,13 +1,61 @@
 <!-- inherit from base.html-->
 {% extends "rockclimb_app/base_template.html" %}
-
-
 <!-- Replace block content in base_template.html -->
 {% block content %}
-<h1>Accurate Rock Climbing Grader</h1>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5; /* This sets the background of the entire page */
+      margin: 0;
+      padding: 0;
+    }
+    .header, .view-button {
+      background-color: #2072d6;
+      color: white;
+    }
+    
+    .container {
+      width: 100%;
+      margin-left: 0;
+      padding: 20px;
+      background-color: #fff;
+    }
+    .portfolio-list {
+      display: flex; /* establishes a flex container */
+      align-items: center; /* aligns items vertically in the center */
+    }
+    .portfolio-entry {
+      margin-bottom: 10px; /* Adds spacing between entries */
+    }
+    label {
+     margin-right: 10px;
+    }
+    .view-button {
+      padding: 10px 20px;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      width: 8%; /* Full width */
+    }
+    .view-button:hover {
+      background-color: #025fd1; /* Darker shade for hover */
+    }
+  </style>
 
-
-
-
-
+  <div>
+    <h1>Rock Climbing Routes</h1>
+    <h2>List of Active Routes</h2>
+    <div class="container">
+    {% for rockVideo in rockVideos %}
+    <div class="rockVideo-entry">
+        <div><span>Gym Name: {{ rockVideo.gym_address }}</span></div>
+        <div>
+          <span><strong>Route Title: {{ rockVideo.title }}</strong></span>
+          <a href="{{ rockVideo.get_absolute_url }}" class="view-button">View</a>
+        </div>
+      </div>
+    {% empty %}
+      <p>No active routes found.</p>
+    {% endfor %}
+  </div>
 {% endblock %}

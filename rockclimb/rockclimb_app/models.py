@@ -15,4 +15,4 @@ class rockVideo(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('portfolio-detail', kwargs={'pk': self.pk})
+        return reverse('rockVideo-detail', kwargs={'pk': self.pk})

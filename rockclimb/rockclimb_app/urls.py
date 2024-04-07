@@ -3,6 +3,7 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from .views import active_rockvideos, rockVideo_detail
 
 
 
@@ -14,6 +15,9 @@ urlpatterns = [
 # example in html <a href="{% url 'index' %}">Home</a>.
 path('', views.index, name='index'),
 path('login/', auth_views.LoginView.as_view(), name='login'),
+path('active-rockVideos/', active_rockvideos, name='active_rockvideos'),
+path('rockVideo/<int:pk>/', views.rockVideo_detail, name='rockVideo-detail'),    
+
 ]
 
 if settings.DEBUG:
