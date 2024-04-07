@@ -52,3 +52,6 @@ def upload_video(request):
     else:
         form = RockVideoForm()
     return render(request, 'upload.html', {'form': form})
+
+def home(request):
+    return render(request, 'rockclimb_app/home.html')
