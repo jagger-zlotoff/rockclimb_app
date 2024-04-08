@@ -70,7 +70,10 @@
     {% else %}
     <p>No media available.</p>
     {% endif %}
-    
+    <form method="post" action="{% url 'rockVideo-detail' pk=rockVideo.pk %}">
+      {% csrf_token %}
+      {{ form.as_p }}  
+      <input type="submit" value="Submit Vote">
   </form>
 </div>
 <div>
