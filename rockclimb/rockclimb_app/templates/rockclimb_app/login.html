@@ -4,7 +4,7 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+    <button type="submit" id="submit">Login</button>
     <a href="{% url 'register' %}">Sign up</a>
 </form>
 {% endblock %}
