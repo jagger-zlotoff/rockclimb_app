@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
 from django.http import HttpResponse
 from .models import rockVideo, Vote
 from django.db.models import Count
@@ -40,27 +42,35 @@ def active_rockvideos(request):
 
 def update_rockVideo(request, pk):
     rockvideo = get_object_or_404(rockVideo, pk=pk)
+    if request.user != rockvideo.user:
+        return HttpResponse("Unauthorized", status=401)
+
     if request.method == 'POST':
         form = RockVideoForm(request.POST, request.FILES, instance=rockvideo)
         if form.is_valid():
             form.save()
-            return redirect('rockVideo-detail', pk=rockvideo.pk)  # Redirect to the detail view or any other view
+            return redirect('rockVideo-detail', pk=rockvideo.pk)
     else:
         form = RockVideoForm(instance=rockvideo)
     return render(request, 'rockclimb_app/update_rockVideo.html', {'form': form})
 
 def delete_rockVideo_confirm(request, pk):
     rockvideo = get_object_or_404(rockVideo, pk=pk)
+    if request.user != rockvideo.user:
+        return HttpResponse("Unauthorized", status=401)
+
     if request.method == 'POST':
         rockvideo.delete()
-        return redirect('index')  # Redirect to the list view after deletion
+        return redirect('index')
     return render(request, 'rockclimb_app/delete_route_confirm.html', {'rockVideo': rockvideo})
 
 def add_rockVideo(request):
     if request.method == 'POST':
         form = RockVideoForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            rock_video = form.save(commit=False)
+            rock_video.user = request.user  # Set the user as the current user
+            rock_video.save()
             return redirect('index')
     else:
         form = RockVideoForm()
@@ -78,3 +88,14 @@ def upload_video(request):
 
 def home(request):
     return render(request, 'rockclimb_app/home.html')
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log in the user immediately after registration
+            return redirect('home')  # Redirect to a home or dashboard page
+    else:
+        form = UserCreationForm()
+    return render(request, 'rockclimb_app/register.html', {'form': form})

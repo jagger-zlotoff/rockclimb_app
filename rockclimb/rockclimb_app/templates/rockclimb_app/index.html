@@ -83,8 +83,10 @@
         <div>
           <span><strong>Route Title: {{ rockVideo.title }}</strong></span>
           <a href="{{ rockVideo.get_absolute_url }}" class="view-button">View</a>
+          {% if request.user == rockVideo.user %}
           <a href="{% url 'rockVideo-update' rockVideo.pk %}" class="update-button">Update</a>
           <a href="{% url 'rockVideo-delete-confirm' rockVideo.pk %}" class="btn btn-danger">Delete</a>
+          {% endif %}
           <span><strong>Difficulty: {{ rockVideo.most_voted_grade }}</strong></span>
         </div>
       </div>
@@ -94,12 +96,19 @@
 
   </div>
 
-  <div>
-    <h2>Add New Route</h2>
-    <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    </form>
-    <a href="{% url 'rockVideo-add' %}" class="add-button">Add New Route</a>
-</div>
+  {% if user.is_authenticated %}
+    <div>    
+        <h2>Add New Route</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </form>
+        <a href="{% url 'rockVideo-add' %}" class="add-button">Add New Route</a>
+    </div>
+{% else %}
+    <div>
+        <!-- This will show a link to the login page if the user is not authenticated -->
+        <p>Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a> to add a new route.</p>
+    </div>
+{% endif %}
 {% endblock %}
