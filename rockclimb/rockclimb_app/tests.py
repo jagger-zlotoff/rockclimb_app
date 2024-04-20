@@ -6,11 +6,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.urls import reverse
 from .models import rockVideo
 from .forms import RockVideoForm
 from django.contrib.auth.models import User
+
 
 #These are all my selenium test cases
 class UserAccountTest(StaticLiveServerTestCase):
@@ -128,6 +129,73 @@ class RockVideoFormTest(TestCase):
         form_data = {'is_active': True}  
         form = RockVideoForm(data=form_data)
         self.assertFalse(form.is_valid())
-        print(form.errors)
           
+#My test cases for my views
+#Test case for index
+class IndexViewTestCase(TestCase):
+    def test_index_view_with_no_videos(self):
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No active rock climbing videos or images")
 
+    def test_index_view_with_active_videos(self):
+        rockVideo.objects.create(title="Climb 1", is_active=True)
+        response = self.client.get(reverse('index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Climb 1")
+
+#Test case for details
+class RockVideoDetailTestCase(TestCase):
+    def setUp(self):
+        self.video = rockVideo.objects.create(title="Climb 1", is_active=True)
+
+    def test_rockvideo_detail_view(self):
+        response = self.client.get(reverse('rockVideo-detail', args=[self.video.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Climb 1")
+
+#Test case for update       
+class UpdateRockVideoTestCase(TestCase):
+    #Happy Case
+    def setUp(self):
+        self.user = User.objects.create_user(username='user', password='pass')
+        self.video = rockVideo.objects.create(title="Climb 1", is_active=True, user=self.user)
+
+    def test_update_rockvideo_view(self):
+        self.client.login(username='user', password='pass')
+        response = self.client.get(reverse('rockVideo-update', args=[self.video.id]))
+        self.assertEqual(response.status_code, 200)
+    #Sad Case
+    def test_update_rockvideo_view_unauthorized(self):
+        other_user = User.objects.create_user(username='other', password='pass')
+        self.client.login(username='other', password='pass')
+        response = self.client.get(reverse('rockVideo-update', args=[self.video.id]))
+        self.assertEqual(response.status_code, 401)
+
+#Test case for delete
+class DeleteRockVideoTestCase(TestCase):
+    #Happy Case
+    def setUp(self):
+        self.user = User.objects.create_user(username='user', password='pass')
+        self.video = rockVideo.objects.create(title="Climb 1", is_active=True, user=self.user)
+
+    def test_delete_rockvideo_confirm(self):
+        self.client.login(username='user', password='pass')
+        response = self.client.post(reverse('rockVideo-delete-confirm', args=[self.video.id]))
+        self.assertRedirects(response, reverse('index'))
+    #Sad Case
+    def test_delete_rockvideo_confirm_unauthorized(self):
+        other_user = User.objects.create_user(username='other', password='pass')
+        self.client.login(username='other', password='pass')
+        response = self.client.post(reverse('rockVideo-delete-confirm', args=[self.video.id]))
+        self.assertEqual(response.status_code, 401)
+
+#Test case for adding
+class AddRockVideoTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='user', password='pass')
+
+    def test_add_rockvideo_view(self):
+        self.client.login(username='user', password='pass')
+        response = self.client.get(reverse('rockVideo-add'))
+        self.assertEqual(response.status_code, 200)

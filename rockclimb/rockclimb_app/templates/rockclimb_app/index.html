@@ -91,7 +91,10 @@
         </div>
       </div>
     {% empty %}
-      <p>No active routes found.</p>
+    {% if not rockVideos %}
+    <p>No active rock climbing videos or images</p>
+    {% endif %}
+  
     {% endfor %}
 
   </div>
