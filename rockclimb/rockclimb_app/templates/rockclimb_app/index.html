@@ -1,6 +1,6 @@
 <!-- inherit from base.html-->
 {% extends "rockclimb_app/base_template.html" %}
-<!-- Replace block content in base_template.html -->
+{% load static %}
 {% block content %}
 <style>
     body {
@@ -114,4 +114,7 @@
         <p>Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a> to add a new route.</p>
     </div>
 {% endif %}
+<footer style="text-align: center; padding: 20px 0;">
+  <img src="{% static 'images/social_media_icons.gif' %}" alt="Footer Image" style="width: auto; max-height: 150px; height: auto;">
+</footer>
 {% endblock %}
