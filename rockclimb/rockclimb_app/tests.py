@@ -1,13 +1,18 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
+from django.test import TestCase, Client
+from django.urls import reverse
+from .models import rockVideo
+from .forms import RockVideoForm
+from django.contrib.auth.models import User
 
-
-# Create your tests here.
+#These are all my selenium test cases
 class UserAccountTest(StaticLiveServerTestCase):
     
     @classmethod
@@ -75,3 +80,54 @@ class UserAccountTest(StaticLiveServerTestCase):
 
         #check result; page source looks at entire html document
         assert 'test_user2' in self.selenium.page_source
+        
+        
+    def test_list_of_routes(self):
+        time.sleep(3)
+        self.selenium.get(f'{self.live_server_url}/routes/')
+        link = self.selenium.find_element(By.LINK_TEXT, 'login')
+        link.click()
+        WebDriverWait(self.selenium, 10).until(EC.url_changes(f'{self.live_server_url}/page-with-link/'))
+        new_url = self.selenium.current_url
+        self.assertIn('login/', new_url)
+
+
+#These are all my unit test cases.
+#My test cases for my models
+class RockVideoModelTests(TestCase):
+    def test_is_active_rockvideo(self):
+        # Happy path: Test that a rockVideo is active
+        active_rockvideo = rockVideo.objects.create(title="A Climb", is_active=True)
+        self.assertTrue(active_rockvideo.is_active) 
+        
+    def test_is_not_active_rockvideo(self):
+        # Sad path: Test that a rockVideo is not active
+        inactive_rockvideo = rockVideo.objects.create(title="A Climb", is_active=False)
+        self.assertFalse(inactive_rockvideo.is_active)
+        
+#My test cases for my forms    
+class RockVideoFormTest(TestCase):
+    # Happy path: Test that the form is valid with data
+    def test_valid_form(self):
+        # Create dummy file data
+        video = SimpleUploadedFile("video.mp4", b"file_content", content_type="video/mp4") 
+        form_data = {
+            'title': 'A Climb',
+            'gym_name': 'Climb Gym',
+            'contact_email': 'contact@climb.com',
+            'gym_address': '123 Climb Street',
+            'is_active': True,
+            'file': video,
+        }
+        form = RockVideoForm(data=form_data, files={'file': video})  
+        self.assertTrue(form.is_valid())
+       
+    def test_invalid_form(self):
+        # Sad path: Test that the form is not valid with missing data
+        #Title is requred but missing from the test
+        form_data = {'is_active': True}  
+        form = RockVideoForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        print(form.errors)
+          
+
