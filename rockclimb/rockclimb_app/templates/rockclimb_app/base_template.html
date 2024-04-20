@@ -9,13 +9,33 @@
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
    <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5; /* This sets the background of the entire page */
-        margin: 0;
-        padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5; /* This sets the background of the entire page */
+      margin: 0;
+      padding: 0;
     }
     .navbar-custom {
-        background-color: #f0e9d6 !important; /* Cream white color */
+      background-color: #fff !important; /* Cream white color */
+      display: flex; /* Display as flex container */
+      justify-content: space-between; /* Space between for left and right alignment */
+      padding: 0.5rem 1rem; /* Add some padding around */
+    }
+    .navbar-nav:first-child {
+      flex-grow: 1; /* Makes the left part take up the available space */
+    }
+  
+    .navbar-nav:last-child {
+      flex-grow: 0; /* Keeps the right part only as wide as its content */
+    }
+  
+    /* Style for your navigation links */
+    .nav-link {
+      margin-right: 10px; /* Adds spacing between the links */
+    }
+  
+    /* Optionally reverse the order if you want the authentication links to come first */
+    .navbar-nav {
+      order: -1;
     }
 </style>
  </head>
@@ -34,23 +54,27 @@
          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
            <div class="navbar-nav">
              <!--  {% url 'index' %}  is defined in url path to dynamically create url -->
-             <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-             <a class="nav-link active" aria-current="page" href="{% url 'index' %}">List of Routes Up</a>
-             {% if user.is_authenticated %}
-            <a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}">Logout {{ user.username }}</a>
-            {% else %}
-            <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">Login</a>
-            <a class="nav-link" href="{% url 'register' %}">Register</a> <!-- Added Register Link -->
-            {% endif %}
+             <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><strong>Home</strong></a>
+             <a class="nav-link active" aria-current="page" href="{% url 'index' %}"><strong>List of Routes Up</strong></a>
+            </div>
+            <div class="navbar-nav">
+              {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}"><strong>Logout {{ user.username }}</strong></a>
+              {% else %}
+                <a class="nav-link active" href="{% url 'login' %}?next={{ request.path }}"><strong>Login</strong></a>
+                <a class="nav-link active" href="{% url 'register' %}"><strong>Register</strong></a>
+              {% endif %}
            </div>
          </div>
        </div>
      </nav>
     <!-- Image of the mountain range -->
     <div class="mountain-range">
-      <img src="{% static 'images/range.gif' %}" alt="Mountain Range" style="width: 100%; height: auto; display: block;">
+      <video autoplay loop muted playsinline style="width: 100%; max-height: 500px; display: block; object-fit: cover;">
+        <source src="{% static 'images/mixkit-man-doing-mountaineering-on-a-large-rocky-mountain-41084-medium.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     </div>
-
        <div class="col-sm-10">
          <!-- add block content from html template -->
          {% block content %}
@@ -58,5 +82,8 @@
        </div>
      </div>
    </div>
+   <footer style="text-align: center; padding: 20px 0;">
+    <img src="{% static 'images/social_media_icons.gif' %}" alt="Footer Image" style="width: auto; max-height: 150px; height: auto;">
+  </footer>
  </body>
 </html>
